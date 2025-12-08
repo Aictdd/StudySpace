@@ -1,0 +1,70 @@
+/**
+ * Table - 数据表格样式
+ */
+
+.table-wrapper {
+  background-color: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table__head {
+  background-color: var(--color-bg-tertiary);
+}
+
+.table__th {
+  padding: var(--spacing-md);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.table__body .table__row {
+  transition: background-color var(--transition-fast);
+}
+
+.table__body .table__row:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.table__td {
+  padding: var(--spacing-md);
+  font-size: var(--font-size-body);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.table__body .table__row:last-child .table__td {
+  border-bottom: none;
+}
+
+/* 斑马纹 */
+.table--striped .table__body .table__row:nth-child(even) {
+  background-color: var(--color-bg-tertiary);
+}
+
+/* 带边框 */
+.table--bordered .table__th,
+.table--bordered .table__td {
+  border: 1px solid var(--color-border-secondary);
+}
+
+/* 选中行 */
+.table__row--selected {
+  background-color: var(--color-primary-bg) !important;
+}
+
+/* 空状态 */
+.table__empty {
+  padding: var(--spacing-xxl);
+  text-align: center;
+  color: var(--color-text-tertiary);
+}

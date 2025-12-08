@@ -1,0 +1,99 @@
+/**
+ * AdminLayout - 管理员端主布局样式
+ * Apple 风格：简洁、通透、优雅
+ */
+
+.admin-layout {
+  min-height: 100vh;
+  display: flex;
+  background: linear-gradient(135deg, #F5F5F7 0%, #E8E8ED 100%);
+}
+
+/* 主内容区 */
+.admin-layout__main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 内容区域 */
+.admin-layout__content {
+  flex: 1;
+  padding: var(--content-padding);
+  padding-top: calc(var(--navbar-height) + var(--content-padding));
+}
+
+/* 页面标题区 */
+.page-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.page-header__title {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: var(--letter-spacing-tight);
+  margin-bottom: var(--spacing-xs);
+}
+
+.page-header__desc {
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+}
+
+/* 内容卡片容器 - 毛玻璃 */
+.content-card {
+  background: var(--glass-bg-dark);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border-secondary);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.content-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.content-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+}
+
+.content-card__title {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+/* 分隔线 */
+.content-card__divider {
+  height: 1px;
+  background: var(--color-border-light);
+  margin: var(--spacing-md) 0;
+}
+
+/* 响应式 */
+@media (max-width: 1200px) {
+  .admin-layout__main {
+    margin-left: var(--sidebar-collapsed-width);
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-layout__main {
+    margin-left: 0;
+  }
+  
+  .admin-layout__content {
+    padding: var(--spacing-md);
+    padding-top: calc(var(--navbar-height) + var(--spacing-md));
+  }
+}

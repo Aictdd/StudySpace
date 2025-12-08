@@ -1,0 +1,137 @@
+/**
+ * DataCard - 数据统计卡片样式
+ * Apple 风格：毛玻璃、柔和阴影、优雅动效
+ */
+
+.data-card {
+  background: var(--glass-bg-dark);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border-secondary);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.data-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+}
+
+.data-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-border-primary);
+}
+
+.data-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+}
+
+.data-card__title {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-card__icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary-gradient);
+  border-radius: var(--radius-md);
+  color: #FFFFFF;
+  font-size: 18px;
+}
+
+.data-card__value {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  letter-spacing: var(--letter-spacing-tight);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1;
+}
+
+.data-card__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.data-card__trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+}
+
+.data-card__trend--up {
+  color: var(--color-success);
+  background: var(--color-success-bg);
+}
+
+.data-card__trend--down {
+  color: var(--color-error);
+  background: var(--color-error-bg);
+}
+
+.data-card__desc {
+  font-size: var(--font-size-small);
+  color: var(--color-text-tertiary);
+}
+
+/* 变体 - 渐变背景 */
+.data-card--gradient {
+  background: var(--color-primary-gradient);
+  border: none;
+}
+
+.data-card--gradient::before {
+  display: none;
+}
+
+.data-card--gradient .data-card__title,
+.data-card--gradient .data-card__value,
+.data-card--gradient .data-card__desc {
+  color: #FFFFFF;
+}
+
+.data-card--gradient .data-card__icon {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.data-card--gradient .data-card__trend {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+/* 变体 - 成功 */
+.data-card--success {
+  background: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+  border: none;
+}
+
+.data-card--success .data-card__title,
+.data-card--success .data-card__value,
+.data-card--success .data-card__desc {
+  color: #FFFFFF;
+}

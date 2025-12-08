@@ -1,0 +1,99 @@
+/**
+ * Navbar - 顶部导航栏样式
+ * Apple 风格：毛玻璃、简洁、精致
+ */
+
+.navbar {
+  height: var(--navbar-height);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--color-border-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-lg);
+}
+
+.navbar--fixed {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-width);
+  right: 0;
+  z-index: var(--z-sticky);
+}
+
+/* 搜索框 */
+.navbar__search {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-bg-hover);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xs) var(--spacing-md);
+  width: 320px;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.navbar__search:focus-within {
+  background-color: var(--color-bg-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-bg);
+}
+
+.navbar__search-input {
+  flex: 1;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-body);
+  color: var(--color-text-primary);
+  background: transparent;
+}
+
+.navbar__search-input::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.navbar__search-btn {
+  padding: var(--spacing-xs);
+  color: var(--color-text-tertiary);
+  transition: all var(--transition-fast);
+  border-radius: var(--radius-sm);
+}
+
+.navbar__search-btn:hover {
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+}
+
+/* 操作区域 */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.navbar__filter-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 8px 16px;
+  background: var(--glass-bg-dark);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.navbar__filter-btn:hover {
+  background: var(--color-bg-primary);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.navbar__filter-btn:active {
+  transform: scale(0.98);
+}

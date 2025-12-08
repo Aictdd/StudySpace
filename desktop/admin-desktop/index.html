@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudySpace 管理后台</title>
+  <link rel="stylesheet" href="core/styles/main.css">
+  <link rel="stylesheet" href="core/layouts/admin-layout/style.css">
+  <link rel="stylesheet" href="core/components/sidebar/style.css">
+  <link rel="stylesheet" href="core/components/navbar/style.css">
+  <link rel="stylesheet" href="core/components/search-bar/style.css">
+  <link rel="stylesheet" href="core/components/button/style.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- 侧边栏 - 毛玻璃效果 -->
+    <aside class="sidebar">
+      <div class="sidebar__logo">
+        <span class="sidebar__logo-text">StudySpace</span>
+      </div>
+      <nav class="sidebar__nav">
+        <a href="modules/dashboard/pages/overview.html" class="sidebar__nav-item sidebar__nav-item--active" data-page="dashboard">
+          <span class="sidebar__nav-text">数据概览</span>
+        </a>
+        <a href="modules/task/pages/index.html" class="sidebar__nav-item" data-page="task">
+          <span class="sidebar__nav-text">任务</span>
+        </a>
+        <a href="modules/calendar/pages/index.html" class="sidebar__nav-item" data-page="calendar">
+          <span class="sidebar__nav-text">日历</span>
+        </a>
+        <a href="modules/study-record/pages/index.html" class="sidebar__nav-item" data-page="study-record">
+          <span class="sidebar__nav-text">学习记录</span>
+        </a>
+        <a href="modules/seat-management/pages/seat-list.html" class="sidebar__nav-item" data-page="seat-management">
+          <span class="sidebar__nav-text">座位管理</span>
+        </a>
+        <a href="modules/settings/pages/index.html" class="sidebar__nav-item" data-page="settings">
+          <span class="sidebar__nav-text">管理员设置</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <div class="admin-layout__main">
+      <!-- 顶部导航 - 毛玻璃效果 -->
+      <header class="navbar navbar--fixed">
+        <div class="search-bar">
+          <input type="text" class="search-bar__input" placeholder="搜索">
+        </div>
+        <div class="navbar__actions">
+          <button class="navbar__filter-btn">筛选</button>
+        </div>
+      </header>
+
+      <!-- 页面内容 -->
+      <main class="admin-layout__content">
+        <div class="welcome-card">
+          <div class="welcome-card__icon">📊</div>
+          <h1 class="welcome-card__title">欢迎使用 StudySpace</h1>
+          <p class="welcome-card__desc">智能学习空间管理系统</p>
+          <a href="modules/dashboard/pages/overview.html" class="btn btn--primary btn--lg">
+            进入数据概览
+            <span>→</span>
+          </a>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <style>
+    .welcome-card {
+      background: var(--glass-bg-dark);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--color-border-secondary);
+      border-radius: var(--radius-xxl);
+      padding: var(--spacing-xxxl) var(--spacing-xxl);
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      max-width: 500px;
+      margin: 80px auto;
+      animation: fadeInUp 0.6s ease;
+    }
+    
+    .welcome-card__icon {
+      font-size: 64px;
+      margin-bottom: var(--spacing-lg);
+      animation: bounce 2s infinite;
+    }
+    
+    .welcome-card__title {
+      font-size: var(--font-size-h1);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-text-primary);
+      letter-spacing: var(--letter-spacing-tight);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .welcome-card__desc {
+      font-size: var(--font-size-h4);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</body>
+</html>

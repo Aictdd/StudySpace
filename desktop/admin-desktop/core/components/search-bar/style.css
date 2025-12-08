@@ -1,0 +1,69 @@
+/**
+ * SearchBar - 搜索栏样式
+ * Apple 风格：简洁、圆润、优雅聚焦效果
+ */
+
+.search-bar {
+  flex: 1;
+  max-width: 480px;
+  margin: 0 var(--spacing-lg);
+  position: relative;
+}
+
+.search-bar__input {
+  width: 100%;
+  padding: 10px 16px;
+  padding-left: 40px;
+  font-size: var(--font-size-body);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-hover);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.search-bar__input::placeholder {
+  color: var(--color-text-tertiary);
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.search-bar__input:hover {
+  background-color: var(--color-bg-active);
+}
+
+.search-bar__input:focus {
+  background-color: var(--color-bg-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-bg);
+  padding-left: 16px;
+}
+
+.search-bar__input:focus::placeholder {
+  opacity: 0;
+}
+
+/* 搜索图标 */
+.search-bar::before {
+  content: '🔍';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  opacity: 0.5;
+  transition: all var(--transition-fast);
+  pointer-events: none;
+}
+
+.search-bar:focus-within::before {
+  opacity: 0;
+}
+
+/* 大尺寸 */
+.search-bar--lg .search-bar__input {
+  padding: 14px 20px;
+  padding-left: 48px;
+  font-size: var(--font-size-h5);
+  border-radius: var(--radius-xl);
+}

@@ -1,0 +1,13 @@
+/**
+ * Main CSS - 样式入口文件
+ * 
+ * 使用方式：在 HTML 中只需引入此文件
+ * <link rel="stylesheet" href="/core/styles/main.css">
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import './variables.css';
+@import './reset.css';
+@import './typography.css';
+@import './utilities.css';

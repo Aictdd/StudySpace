@@ -1,0 +1,147 @@
+/**
+ * Dashboard Overview 页面样式
+ * Apple 风格：优雅、精致、交互丰富
+ */
+
+/* 筛选栏 */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+/* 日期选择器 */
+.date-picker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.date-picker__input {
+  padding: 10px 16px;
+  padding-right: 40px;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  background: var(--glass-bg-dark);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  min-width: 150px;
+  transition: all var(--transition-fast);
+}
+
+.date-picker__input:hover {
+  background: var(--color-bg-primary);
+  border-color: var(--color-border-primary);
+  transform: translateY(-1px);
+}
+
+.date-picker__input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-bg);
+}
+
+.date-picker__icon {
+  position: absolute;
+  right: 12px;
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  font-size: 16px;
+}
+
+/* 统计卡片网格 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 使用情况横条图 - 渐变 */
+.usage-bar {
+  position: relative;
+  height: 48px;
+  background: var(--color-bg-hover);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.usage-bar__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  border-radius: var(--radius-lg);
+  transition: width 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.usage-bar__text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: var(--font-size-body);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  font-weight: var(--font-weight-medium);
+}
+
+/* 记录占位区域 */
+.records-placeholder {
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-bg-tertiary) 0%, var(--color-bg-secondary) 100%);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+/* 内容卡片间距 */
+.content-card {
+  margin-bottom: var(--spacing-lg);
+}
+
+.content-card:last-child {
+  margin-bottom: 0;
+}
+
+/* 动画入场效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats-grid .data-card {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.stats-grid .data-card:nth-child(1) { animation-delay: 0.1s; }
+.stats-grid .data-card:nth-child(2) { animation-delay: 0.2s; }
+.stats-grid .data-card:nth-child(3) { animation-delay: 0.3s; }
+.stats-grid .data-card:nth-child(4) { animation-delay: 0.4s; }
