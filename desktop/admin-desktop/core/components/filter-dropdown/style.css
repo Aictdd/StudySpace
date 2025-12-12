@@ -42,7 +42,7 @@
 }
 
 .filter-dropdown__arrow {
-  font-size: 10px;
+  font-size: 14px;
   color: var(--color-text-tertiary);
   transition: transform var(--transition-bounce);
 }
