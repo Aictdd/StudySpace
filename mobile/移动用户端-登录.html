@@ -1,1 +1,427 @@
-<!-- Placeholder for 移动用户端-登录 -->
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>StudySpace - 移动端用户登录</title>
+  <link rel="stylesheet" href="../desktop/admin-desktop/core/styles/main.css">
+  <style>
+    :root {
+      --auth-bg: radial-gradient(circle at 18% 22%, rgba(0, 122, 255, 0.12), transparent 34%),
+        radial-gradient(circle at 78% 18%, rgba(90, 200, 250, 0.12), transparent 36%),
+        radial-gradient(circle at 50% 82%, rgba(0, 122, 255, 0.08), transparent 38%),
+        linear-gradient(180deg, #F2F3F7 0%, #E7E9F2 100%);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-family-primary);
+      background: var(--auth-bg);
+      color: var(--color-text-primary);
+      display: flex;
+      justify-content: center;
+      padding: 28px 16px 32px;
+    }
+
+    .page {
+      width: min(390px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      min-height: calc(100vh - 60px);
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--color-primary-gradient);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: 0.02em;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title strong { font-size: 18px; letter-spacing: var(--letter-spacing-tight); }
+    .brand-title span { color: var(--color-text-secondary); font-size: 13px; }
+
+    .phone-shell {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--color-border-secondary);
+      border-radius: 46px;
+      padding: 18px 16px 22px;
+      box-shadow: var(--shadow-xl);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      min-height: 780px;
+      display: grid;
+      gap: var(--spacing-md);
+    }
+
+    .login-card {
+      background: var(--glass-bg-dark);
+      border: 1px solid var(--color-border-secondary);
+      border-radius: var(--radius-xxl);
+      padding: 18px 16px 20px;
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      gap: var(--spacing-md);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      justify-content: flex-start;
+      padding: 8px 12px;
+      border: 1px solid var(--color-border-secondary);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, #F8FBFF 0%, #F1F6FF 60%, #FFFFFF 100%);
+      box-shadow: var(--shadow-sm);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .login-panel h2 {
+      margin: 0;
+      text-align: center;
+      font-size: 18px;
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-primary);
+    }
+
+    .form-grid {
+      display: grid;
+      gap: var(--spacing-sm);
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 14px;
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .input {
+      width: 100%;
+      padding: 14px 12px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border-secondary);
+      background: rgba(255, 255, 255, 0.94);
+      font-size: 15px;
+      transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.18);
+    }
+
+    .captcha-row {
+      display: flex;
+      gap: var(--spacing-sm);
+      align-items: center;
+    }
+
+    .captcha-row .input { flex: 1; }
+
+    .btn-ghost {
+      border: 1px solid var(--color-border-secondary);
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform var(--transition-bounce), box-shadow var(--transition-normal), border-color var(--transition-normal);
+      white-space: nowrap;
+    }
+
+    .btn-ghost:hover { transform: translateY(-1px); border-color: var(--color-primary); box-shadow: var(--shadow-sm); }
+    .btn-ghost:active { transform: translateY(0); }
+
+    .actions {
+      display: flex;
+      gap: var(--spacing-sm);
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      border: none;
+      background: var(--color-primary-gradient);
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: var(--radius-lg);
+      font-size: 16px;
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+      box-shadow: var(--shadow-button);
+      transition: transform var(--transition-bounce), box-shadow var(--transition-normal);
+      flex: 1;
+    }
+
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-card-hover); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .link-button {
+      border: 1px solid var(--color-border-secondary);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--color-text-primary);
+      padding: 12px 14px;
+      border-radius: var(--radius-lg);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+      transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+      flex: 1;
+    }
+
+    .link-button:hover { border-color: var(--color-primary); box-shadow: var(--shadow-sm); }
+
+    .form-message {
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: 14px;
+      display: none;
+      align-items: center;
+      gap: var(--spacing-sm);
+      justify-content: center;
+    }
+
+    .form-message--error { display: flex; background: var(--color-error-bg); color: var(--color-error); border: 1px solid rgba(255, 59, 48, 0.2); }
+    .form-message--success { display: flex; background: var(--color-success-bg); color: var(--color-success); border: 1px solid rgba(52, 199, 89, 0.2); }
+
+    .helper-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-border-secondary);
+      border-radius: 24px;
+      padding: 12px 14px;
+      background: rgba(245, 245, 247, 0.92);
+    }
+
+    .helper-row strong {
+      color: var(--color-text-primary);
+      font-size: 14px;
+      letter-spacing: var(--letter-spacing-tight);
+    }
+
+    .helper-row a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: var(--font-weight-semibold);
+      text-align: center;
+    }
+
+    .other-login {
+      border: 1px solid var(--color-border-secondary);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, #F9FBFF 0%, #F2F6FF 60%, #FFFFFF 100%);
+      padding: 14px 12px;
+      display: grid;
+      gap: var(--spacing-sm);
+      box-shadow: var(--shadow-md);
+    }
+
+    .other-login h3 {
+      margin: 0;
+      text-align: center;
+      font-size: 15px;
+      letter-spacing: var(--letter-spacing-tight);
+      color: var(--color-text-secondary);
+    }
+
+    .other-login .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(94px, 1fr));
+      gap: var(--spacing-sm);
+    }
+
+    .ghost-btn {
+      border: 1px solid var(--color-border-secondary);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, #F8FAFF 0%, #F5F7FB 50%, #F8FAFF 100%);
+      padding: 12px;
+      font-weight: var(--font-weight-semibold);
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform var(--transition-bounce), box-shadow var(--transition-normal), border-color var(--transition-normal);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .ghost-btn:hover { transform: translateY(-1px); border-color: var(--color-primary); box-shadow: var(--shadow-sm); }
+
+    .btn-wechat { background: linear-gradient(135deg, #F2F7FF 0%, #EAF3FF 60%, #F6FAFF 100%); border-color: rgba(0, 122, 255, 0.22); color: #205AA8; }
+    .btn-email { background: linear-gradient(135deg, #F4F6FF 0%, #EDF0FF 60%, #F8FAFF 100%); border-color: rgba(92, 116, 255, 0.22); color: #364682; }
+    .btn-guest { background: linear-gradient(135deg, #F5FBFF 0%, #EFF9FF 60%, #FBFDFF 100%); border-color: rgba(0, 122, 255, 0.2); color: #205AA8; }
+
+    @media (max-width: 480px) {
+      body { padding: 20px 12px; }
+      .phone-shell { padding: 14px 12px 18px; border-radius: 46px; min-height: 640px; }
+      .page { min-height: calc(100vh - 40px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="phone-shell">
+      <div class="card-header" aria-label="登录标题">
+        <div class="brand-logo">SS</div>
+        <div class="brand-title">
+          <strong>StudySpace 用户登录</strong>
+          <span>让高效学习空间触手可及</span>
+        </div>
+      </div>
+
+      <section class="login-card login-panel" aria-label="登录输入框">
+        <h2>登录输入框</h2>
+        <form class="form-grid" id="loginForm">
+          <div class="field">
+            <label for="account">用户账号</label>
+            <input id="account" class="input" type="text" name="account" placeholder="手机号 / 邮箱" autocomplete="username" required>
+          </div>
+          <div class="field">
+            <label for="password">密码</label>
+            <input id="password" class="input" type="password" name="password" placeholder="请输入密码" autocomplete="current-password" required>
+          </div>
+          <div class="field">
+            <label for="captcha">验证码</label>
+            <div class="captcha-row">
+              <input id="captcha" class="input" type="text" name="captcha" placeholder="请输入验证码" autocomplete="one-time-code">
+              <button class="btn-ghost" type="button" id="sendCodeBtn">获取验证码</button>
+            </div>
+          </div>
+          <div class="form-message" id="formMessage" aria-live="polite"></div>
+          <div class="actions">
+            <button class="link-button" type="button" onclick="window.location.href='移动用户端-注册.html'">新用户注册</button>
+            <button class="btn-primary" type="submit" id="loginBtn">登录按钮</button>
+          </div>
+        </form>
+      </section>
+
+      <div class="helper-row" aria-label="辅助链接">
+        <strong>忘记密码？</strong>
+        <a href="#" title="通过手机号找回密码">手机号找回</a>
+        <a href="#" title="通过邮箱找回密码">邮箱找回</a>
+        <a href="#" title="联系客服帮助您找回密码">联系客服</a>
+      </div>
+
+      <section class="other-login" aria-label="其他登录方式">
+        <h3>其他登录方式</h3>
+        <div class="grid">
+          <button class="ghost-btn btn-wechat" type="button" id="wechatScan">微信登录</button>
+          <button class="ghost-btn btn-email" type="button" id="emailLogin">邮箱登录</button>
+          <button class="ghost-btn btn-guest" type="button" id="guestLogin">访客模式</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const form = document.querySelector("#loginForm");
+    const formMessage = document.querySelector("#formMessage");
+    const loginBtn = document.querySelector("#loginBtn");
+    const sendCodeBtn = document.querySelector("#sendCodeBtn");
+
+    function showMessage(text, type = "error") {
+      formMessage.textContent = text;
+      formMessage.classList.remove("form-message--error", "form-message--success");
+      formMessage.classList.add(type === "success" ? "form-message--success" : "form-message--error");
+    }
+
+    function clearMessage() {
+      formMessage.textContent = "";
+      formMessage.classList.remove("form-message--error", "form-message--success");
+      formMessage.style.display = "none";
+    }
+
+    sendCodeBtn?.addEventListener("click", () => {
+      const account = document.querySelector("#account").value.trim();
+      if (!account) {
+        formMessage.style.display = "flex";
+        showMessage("请先填写账号后再获取验证码");
+        return;
+      }
+      let countdown = 60;
+      sendCodeBtn.disabled = true;
+      sendCodeBtn.textContent = `重新获取(${countdown}s)`;
+      const timer = setInterval(() => {
+        countdown -= 1;
+        sendCodeBtn.textContent = countdown > 0 ? `重新获取(${countdown}s)` : "获取验证码";
+        if (countdown <= 0) {
+          clearInterval(timer);
+          sendCodeBtn.disabled = false;
+        }
+      }, 1000);
+      formMessage.style.display = "flex";
+      showMessage("验证码已发送到您的账号（示例提示）", "success");
+    });
+
+    form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      clearMessage();
+      const account = document.querySelector("#account").value.trim();
+      const password = document.querySelector("#password").value.trim();
+      const captcha = document.querySelector("#captcha").value.trim();
+      if (!account || !password) {
+        formMessage.style.display = "flex";
+        showMessage("账号和密码不能为空");
+        return;
+      }
+      loginBtn.disabled = true;
+      loginBtn.textContent = "登录中...";
+      setTimeout(() => {
+        if (password.length >= 6) {
+          formMessage.style.display = "flex";
+          showMessage("登录成功，正在跳转...", "success");
+        } else {
+          formMessage.style.display = "flex";
+          showMessage("密码长度不足，请重试");
+        }
+        loginBtn.disabled = false;
+        loginBtn.textContent = "登录按钮";
+      }, 700);
+    });
+
+    document.querySelector("#wechatScan")?.addEventListener("click", () => {
+      formMessage.style.display = "flex";
+      showMessage("请使用企业微信扫一扫窗口登录（示例）", "success");
+    });
+
+    document.querySelector("#emailLogin")?.addEventListener("click", () => {
+      formMessage.style.display = "flex";
+      showMessage("将跳转邮箱验证码登录流程（示例）", "success");
+    });
+
+    document.querySelector("#guestLogin")?.addEventListener("click", () => {
+      formMessage.style.display = "flex";
+      showMessage("已进入访客模式体验（示例）", "success");
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
