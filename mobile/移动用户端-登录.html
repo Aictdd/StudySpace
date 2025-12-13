@@ -355,6 +355,10 @@
       formMessage.style.display = "none";
     }
 
+    function goTo(path) {
+      window.location.href = path;
+    }
+
     sendCodeBtn?.addEventListener("click", () => {
       const account = document.querySelector("#account").value.trim();
       if (!account) {
@@ -394,6 +398,7 @@
         if (password.length >= 6) {
           formMessage.style.display = "flex";
           showMessage("登录成功，正在跳转...", "success");
+          setTimeout(() => goTo("移动用户端-任务.html"), 600);
         } else {
           formMessage.style.display = "flex";
           showMessage("密码长度不足，请重试");
@@ -420,8 +425,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
