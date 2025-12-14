@@ -374,6 +374,13 @@
     const calendarSelect = document.getElementById('calendarSelect');
 
     function formatDateCN(d){ return `${d.getFullYear()}/${pad2(d.getMonth()+1)}/${pad2(d.getDate())}`; }
+    function timeToMinutes(t){
+      if(!t) return 0;
+      const [h,m] = t.split(':').map(Number);
+      const hh = Number.isFinite(h) ? h : 0;
+      const mm = Number.isFinite(m) ? m : 0;
+      return hh*60 + mm;
+    }
 
     function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
 
