@@ -41,59 +41,46 @@
       --glass-border:rgba(229,229,231,0.5);
       --glass-blur:blur(10px);
     }
-    /* 右侧日程列表：标题更大 */
-    .list-item__title{
-      font-size: 16px;     /* 原来 13/14 -> 16 */
-      font-weight: 900;
-      line-height: 1.25;
-    }
 
-    /* 右侧日程列表：标签更小（只影响列表，不影响左侧网格事件块） */
-    .list-item__tags .pill{
-      font-size: 12px;     /* 缩小标签字 */
-      padding: 3px 10px;   /* 同时缩小药丸高度 */
-      border-radius: 999px;
-    }
-
-    /* 可选：标签行更紧凑一点 */
-    .list-item__tags{
-      gap: 6px;
-    }
-        /* ✅ 日程列表：统一高度 */
+    /* ====== 右侧列表：标题更大、标签更小、标签独占一行、卡片统一高度 ====== */
     .list-item{
-      min-height: 124px;         /* 你想更紧凑可调 112 / 更宽松可调 132 */
-      align-items: center;       /* 让左侧 time-tag 垂直居中 */
+      min-height: 124px;
+      align-items: center;
     }
-
-    /* 主区域：三行布局（标题 / 地点 / 标签） */
     .list-item__main{
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-width: 0;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:0;
     }
-
-    /* 地点行单独一行 */
+    .list-item__title{
+      font-size:16px;
+      font-weight:900;
+      line-height:1.25;
+      color:var(--text-main);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      margin-bottom:0;
+    }
     .list-item__loc{
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--text-secondary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size:12px;
+      font-weight:800;
+      color:var(--text-secondary);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-
-    /* ✅ 标签永远单独一行 */
     .list-item__tags{
-      display: flex;
-      gap: 8px;
-      flex-wrap: nowrap;         /* 不换行，保持“单独一行” */
-      overflow: hidden;          /* 超出就截断（不影响整体高度） */
+      display:flex;
+      gap:8px;
+      flex-wrap:nowrap;     /* 标签单独一行，不换行 */
+      overflow:hidden;
     }
-
-    /* 标签在列表里更紧凑一点（可选） */
     .list-item__tags .pill{
-      padding: 4px 10px;
+      font-size:12px;
+      padding:3px 10px;
+      border-radius:999px;
     }
 
     *{
@@ -217,6 +204,7 @@
     }
     .date-chip small{font-weight:800;color:var(--text-secondary);}
 
+    /* ✅ 视图切换：支持跳转 */
     .view-tabs{
       display:flex;gap:6px;padding:4px;
       background:var(--bg-light);
@@ -314,7 +302,7 @@
       position:sticky;left:0;z-index:5;
     }
     .time-slot{
-      height:56px; /* JS 会根据密度覆盖 */
+      height:56px;
       border-bottom:1px solid var(--border-light);
       display:flex;align-items:flex-start;justify-content:flex-end;
       padding:10px 10px 0 0;
@@ -323,7 +311,7 @@
     }
     .canvas{position:relative;}
     .canvas-row{
-      height:56px; /* JS 会根据密度覆盖 */
+      height:56px;
       border-bottom:1px solid var(--border-light);
       position:relative;
     }
@@ -342,7 +330,7 @@
       box-shadow:0 0 0 6px rgba(255,59,48,0.12);
     }
 
-    /* ===== 事件块（修复：高度/换行/不裁切） ===== */
+    /* ===== 事件块（高度/换行/不裁切） ===== */
     .event{
       position:absolute;left:16px;right:16px;
       border-radius:14px;
@@ -353,8 +341,6 @@
       cursor:pointer;
       transition:transform .15s, box-shadow .2s, border-color .2s;
       overflow:hidden;
-
-      /* ✅ 稳定内部布局 */
       display:flex;
       flex-direction:column;
       gap:8px;
@@ -372,9 +358,6 @@
     }
     .event__title{
       font-size:14px;font-weight:900;color:var(--text-main);
-      margin-bottom:0;
-
-      /* ✅ 允许两行，避免标题被裁 */
       white-space:normal;
       overflow:hidden;
       display:-webkit-box;
@@ -393,6 +376,7 @@
       border:1px solid var(--border);
       color:var(--text-secondary);
       font-weight:900;
+      white-space:nowrap;
     }
     .event--focus{
       background:linear-gradient(135deg, rgba(76,217,100,0.16), rgba(76,217,100,0.10));
@@ -462,15 +446,9 @@
       color:var(--primary);
       border:1px solid rgba(45,129,255,0.22);
       font-weight:900;font-size:12px;line-height:1.1;
+      align-self:center;
     }
     .time-tag small{display:block;margin-top:4px;color:var(--text-secondary);font-weight:900;}
-    .list-item__main{flex:1;min-width:0;}
-    .list-item__title{
-      font-size:14px;font-weight:900;color:var(--text-main);
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-      margin-bottom:6px;
-    }
-    .list-item__meta{font-size:12px;font-weight:800;color:var(--text-secondary);display:flex;gap:8px;flex-wrap:wrap;}
     .side-panel__footer{
       padding:14px 18px 18px;border-top:1px solid var(--border);
       display:flex;gap:10px;
@@ -548,9 +526,9 @@
             <button class="btn" id="nextDayBtn">下一天</button>
 
             <div class="view-tabs" aria-label="视图切换">
-              <button class="view-tab active" data-view="day">日</button>
-              <button class="view-tab" data-view="week">周</button>
-              <button class="view-tab" data-view="month">月</button>
+              <button class="view-tab active" data-view="day" type="button">日</button>
+              <button class="view-tab" data-view="week" type="button">周</button>
+              <button class="view-tab" data-view="month" type="button">月</button>
             </div>
 
             <button class="btn btn-primary" id="newEventBtn">新建日程</button>
@@ -655,7 +633,7 @@
   </div>
 
   <script>
-    /* 示例数据 */
+    /* ========= 示例数据（日视图按当天展示） ========= */
     let events = [
       {
         id: "e1",
@@ -686,12 +664,15 @@
       }
     ];
 
-    /* 工具 */
+    /* ========= 工具 ========= */
     const pad2 = n => String(n).padStart(2, "0");
     const weekCN = ["周日","周一","周二","周三","周四","周五","周六"];
 
     function formatDateCN(d){
       return `${d.getFullYear()}/${pad2(d.getMonth()+1)}/${pad2(d.getDate())}`;
+    }
+    function toISODate(d){
+      return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
     }
     function timeToMinutes(t){
       const [h,m] = t.split(":").map(Number);
@@ -704,7 +685,34 @@
       }[s]));
     }
 
-    /* DOM */
+    /* ========= 读取 URL date 参数作为初始日期 ========= */
+    function getQueryDate(){
+      const p = new URLSearchParams(location.search);
+      const s = p.get("date");
+      if(!s) return null;
+      // 期望 YYYY-MM-DD
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+      if(!m) return null;
+      const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      if (Number.isNaN(d.getTime())) return null;
+      return d;
+    }
+    function setQueryDate(d){
+      const p = new URLSearchParams(location.search);
+      p.set("date", toISODate(d));
+      const newUrl = `${location.pathname}?${p.toString()}`;
+      history.replaceState(null, "", newUrl);
+    }
+
+    /* ========= 视图跳转（把 date 带过去） ========= */
+    function goToView(view){
+      const dateStr = toISODate(currentDate);
+      if(view === "day")  location.href = `calendar_day.html?date=${encodeURIComponent(dateStr)}`;
+      if(view === "week") location.href = `calendar_week.html?date=${encodeURIComponent(dateStr)}`;
+      if(view === "month")location.href = `calendar_month.html?date=${encodeURIComponent(dateStr)}`;
+    }
+
+    /* ========= DOM ========= */
     const dateChipMain = document.getElementById("dateChipMain");
     const dateChipWeek = document.getElementById("dateChipWeek");
     const summaryBadge = document.getElementById("summaryBadge");
@@ -734,21 +742,19 @@
     const modalCancel = document.getElementById("modalCancel");
     const modalOk = document.getElementById("modalOk");
 
-    /* 状态 */
-    let currentDate = new Date();
+    /* ========= 状态 ========= */
+    let currentDate = getQueryDate() || new Date();
     let selectedEventId = null;
-
     let ROW_HEIGHT = 56; // 1小时对应像素高度
 
-    /* 事件：根据时长精细化最小高度（实现你要的小建议） */
+    /* 事件：根据时长分段最小高度 */
     function minHeightByDuration(durMinutes){
       if (durMinutes < 90) return 90;
       if (durMinutes < 110) return 110;
       return 64;
     }
 
-
-    /* 网格 */
+    /* ========= 网格 ========= */
     function renderGrid(){
       timeCol.innerHTML = "";
       canvas.innerHTML = "";
@@ -767,7 +773,7 @@
       }
     }
 
-    /* 事件渲染 */
+    /* ========= 事件渲染 ========= */
     function toneClass(tone){
       if(tone === "focus") return "event--focus";
       if(tone === "warn") return "event--warn";
@@ -785,7 +791,6 @@
 
         const top = (startMin / 60) * ROW_HEIGHT + 6;
 
-        // 按时长计算高度（比例），再套用分段最小高度
         const proportional = (dur / 60) * ROW_HEIGHT - 10;
         const minH = minHeightByDuration(dur);
         const height = Math.max(minH, proportional);
@@ -811,7 +816,7 @@
       summaryBadge.textContent = `今日 ${filtered.length} 个日程`;
     }
 
-    /* 右侧列表 */
+    /* ========= 右侧列表 ========= */
     function renderAgendaList(filtered){
       agendaList.innerHTML = "";
       const sorted = [...filtered].sort((a,b)=>timeToMinutes(a.start)-timeToMinutes(b.start));
@@ -860,7 +865,7 @@
       deleteBtn.disabled = false;
     }
 
-    /* ✅ 修正：当前时间线（不加固定偏移） */
+    /* ========= 当前时间线（仅当天显示） ========= */
     function renderNowLine(){
       const today = new Date();
       const sameDay = today.toDateString() === currentDate.toDateString();
@@ -868,25 +873,21 @@
         nowLine.style.display = "none";
         return;
       }
-
       const minutes = today.getHours()*60 + today.getMinutes();
       const top = (minutes / 60) * ROW_HEIGHT;
-
       nowLine.style.display = "block";
       nowLine.style.top = `${top}px`;
     }
 
-    /* ✅ 修正：定位当前时间（以 now-line 的 top 为准） */
     function scrollToNow(){
       const today = new Date();
       const minutes = today.getHours()*60 + today.getMinutes();
       const top = (minutes / 60) * ROW_HEIGHT;
-
       const target = top - dayGrid.clientHeight * 0.35;
       dayGrid.scrollTop = clamp(target, 0, dayGrid.scrollHeight);
     }
 
-    /* 顶部日期 */
+    /* ========= 顶部日期 ========= */
     function updateDateHeader(){
       dateChipMain.textContent = formatDateCN(currentDate);
       dateChipWeek.textContent = weekCN[currentDate.getDay()];
@@ -894,8 +895,9 @@
 
     function shiftDay(delta){
       currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()+delta);
-      selectedEventId = null;
+      setQueryDate(currentDate);
 
+      selectedEventId = null;
       editBtn.disabled = true;
       deleteBtn.disabled = true;
       dTitle.textContent = "—";
@@ -904,15 +906,20 @@
       dTags.innerHTML = `<span class="pill">—</span>`;
 
       rerender();
+      // 如果切回今天，自动稍微定位一下
+      if(new Date().toDateString() === currentDate.toDateString()){
+        setTimeout(scrollToNow, 50);
+      }
     }
 
     function setToday(){
       currentDate = new Date();
+      setQueryDate(currentDate);
       rerender();
       setTimeout(scrollToNow, 50);
     }
 
-    /* 过滤 */
+    /* ========= 过滤 ========= */
     function filterEvents(){
       const q = (searchInput.value || "").trim().toLowerCase();
       const source = calendarSelect.value;
@@ -933,11 +940,11 @@
     function applyDensity(){
       const d = densitySelect.value;
       ROW_HEIGHT = d === "compact" ? 48 : 56;
-      rerender();             // ✅ 密度改变要重建网格与事件定位
+      rerender();
       setTimeout(renderNowLine, 10);
     }
 
-    /* 渲染总控 */
+    /* ========= 渲染总控 ========= */
     function rerender(){
       updateDateHeader();
       renderGrid();
@@ -947,7 +954,7 @@
       renderNowLine();
     }
 
-    /* Modal */
+    /* ========= Modal ========= */
     let modalOkHandler = null;
     function showModal(title, msg, onOk){
       modalTitle.textContent = title;
@@ -960,7 +967,7 @@
       modalOkHandler = null;
     }
 
-    /* 绑定 */
+    /* ========= 绑定 ========= */
     document.getElementById("prevDayBtn").addEventListener("click", ()=>shiftDay(-1));
     document.getElementById("nextDayBtn").addEventListener("click", ()=>shiftDay(1));
     document.getElementById("todayBtn").addEventListener("click", setToday);
@@ -1013,14 +1020,12 @@
     calendarSelect.addEventListener("change", rerender);
     densitySelect.addEventListener("change", applyDensity);
 
+    /* ✅ 视图切换：跳转周/月（并携带 date） */
     document.querySelectorAll(".view-tab").forEach(btn=>{
       btn.addEventListener("click", ()=>{
-        document.querySelectorAll(".view-tab").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
         const v = btn.dataset.view;
-        if(v !== "day"){
-          showModal("提示", "当前页面实现的是「日视图」。\n如需周视图/月视图，我可以按同风格补齐。", closeModal);
-        }
+        if(v === "day") return;
+        goToView(v);
       });
     });
 
@@ -1035,8 +1040,11 @@
 
     /* 初始化 */
     (function init(){
+      setQueryDate(currentDate);
       rerender();
-      setTimeout(scrollToNow, 80);
+      if(new Date().toDateString() === currentDate.toDateString()){
+        setTimeout(scrollToNow, 80);
+      }
     })();
   </script>
 </body>
