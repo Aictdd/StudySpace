@@ -631,6 +631,7 @@
     calendarSelect.addEventListener('change', ()=>{resetDetail();renderMonthGrid();});
     modalCancel.addEventListener('click', closeModal);
     modalOk.addEventListener('click', ()=>{
+
       // 表单模式下直接提交，避免回调丢失导致点击无响应
       if(modalForm.style.display !== 'none'){
         handleSubmitForm();
