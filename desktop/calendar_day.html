@@ -1128,6 +1128,11 @@
 
     modalCancel.addEventListener("click", closeModal);
     modalOk.addEventListener("click", ()=>{
+      // 如果当前展示的是表单，优先执行提交逻辑，避免因回调丢失导致按钮无响应
+      if(modalForm.style.display !== "none") {
+        handleSubmitForm();
+        return;
+      }
       if(typeof modalOkHandler === "function") modalOkHandler();
       else closeModal();
     });
