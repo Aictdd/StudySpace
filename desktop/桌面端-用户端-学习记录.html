@@ -753,7 +753,7 @@
       els.filterButtons.forEach(chip => {
         const labelEl = chip.querySelector('.select-label');
         const scope = chip.dataset.scope;
-        if (chip.dataset.scope === scopeOverride && labelOverride) {
+        if (chip.dataset.key === key && labelOverride && scopeOverride === scope) {
           labelEl.textContent = labelOverride;
           state.labels[scope] = labelOverride;
         } else {
@@ -838,19 +838,7 @@
         els.modal.classList.remove('open');
         return;
       }
-      let selLabel = els.modalSelect.value;
-      // 如果是范围模式且选择自定义，使用日期区间标签
-      if (pendingScope === 'range') {
-        const start = els.startDate.value;
-        const end = els.endDate.value;
-        if (start && end) {
-          selLabel = `${start} - ${end}`;
-        } else {
-          selLabel = '自定义区间';
-        }
-      } else if (selLabel === '自定义' && pendingScope === 'range') {
-        selLabel = '自定义区间';
-      }
+      const selLabel = els.modalSelect.value;
       applyDataset('custom', selLabel, pendingScope);
       els.modal.classList.remove('open');
       pendingScope = null;

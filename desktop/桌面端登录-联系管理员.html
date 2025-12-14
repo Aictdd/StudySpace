@@ -20,6 +20,7 @@
       align-items: center;
       gap: var(--spacing-lg);
       padding: var(--spacing-xl);
+      padding-top: calc(var(--spacing-xl) + 40px);
     }
     .brand-bar {
       width: min(1040px, 100%);
@@ -45,12 +46,14 @@
       background: var(--glass-bg-dark);
       border: 1px solid var(--color-border-secondary);
       border-radius: var(--radius-xxl);
-      padding: var(--spacing-xl);
+      padding: calc(var(--spacing-xl) + 8px);
       box-shadow: var(--shadow-xl);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       display: grid;
       gap: var(--spacing-lg);
+      min-height: 72vh;
+      margin-top: var(--spacing-md);
     }
     .page-header { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); flex-wrap: wrap; }
     .page-header h1 { margin: 0; font-size: 24px; letter-spacing: var(--letter-spacing-tight); }

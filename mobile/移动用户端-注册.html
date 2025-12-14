@@ -48,6 +48,9 @@
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
     }
+    .phone-shell {
+  scrollbar-width: none; /* 隐藏滚动条 */
+}
 
     .status-bar {
       height: 44px;
@@ -458,14 +461,16 @@
 
       setTimeout(() => {
         showMessage('注册成功，正在跳转登录页...', 'success');
-        setTimeout(() => goTo('移动用户端-进入页面.html'), 700);
+        setTimeout(() => goTo('移动用户端-登录.html'), 700);
         registerBtn.disabled = false;
         registerBtn.textContent = '提交注册';
       }, 800);
     });
 
-    document.querySelector('#backToLogin')?.addEventListener('click', () => goTo('移动用户端-进入页面.html'));
+    document.querySelector('#backToLogin')?.addEventListener('click', () => goTo('移动用户端-登录.html'));
     document.querySelector('#toTask')?.addEventListener('click', () => goTo('移动用户端-进入页面.html'));
+
+
 
     // Modal for TOS / Privacy
     const modalBackdrop = (() => {

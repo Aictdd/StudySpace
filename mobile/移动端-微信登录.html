@@ -31,13 +31,13 @@
       background: rgba(255, 255, 255, 0.9);
       border: 1px solid var(--color-border-secondary);
       border-radius: 46px;
-      padding: 18px 16px 22px;
+      padding: 14px 16px 18px;
       box-shadow: var(--shadow-xl);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       min-height: 780px;
       display: grid;
-      gap: var(--spacing-sm);
+      gap: 10px;
     }
 
     .status-bar {
@@ -182,7 +182,7 @@
       <section class="panel" aria-label="微信扫码">
         <h2>微信扫码登录</h2>
         <div class="qr-box">
-          <div class="qr-placeholder" aria-hidden="true">微信二维码</div>
+          <img src="2.png" alt="微信登录二维码" class="qr-placeholder" style="width: 180px; height: 180px; object-fit: cover; border-radius: 24px;">
           <div class="form-message form-message--success" aria-live="polite" id="qrMessage">已生成登录二维码</div>
           <ul class="list">
             <li>打开微信 · 扫一扫</li>
