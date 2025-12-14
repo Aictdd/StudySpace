@@ -416,7 +416,33 @@
     const densitySelect = document.getElementById("densitySelect");
 
     function formatDateCN(d){ return `${d.getFullYear()}/${pad2(d.getMonth()+1)}/${pad2(d.getDate())}`; }
-    function timeToMinutes(t){ const [h,m] = t.split(":").map(Number); return h*60 + m; }
+    function safeTimeStr(t){ return /^\d{2}:\d{2}$/.test(t||"") ? t : "00:00"; }
+    function timeToMinutes(t){
+      if(!t) return 0;
+      const [h,m] = t.split(":").map(Number);
+      const hh = Number.isFinite(h) ? h : 0;
+      const mm = Number.isFinite(m) ? m : 0;
+      return hh*60 + mm;
+    }
+    function minutesToTime(mins){
+      const clamped = Math.max(0, mins);
+      const h = Math.floor(clamped/60);
+      const m = clamped % 60;
+      return `${pad2(h)}:${pad2(m)}`;
+    }
+    function normalizeEventTimes(ev){
+      const startSafe = safeTimeStr(ev.start);
+      const rawEndSafe = safeTimeStr(ev.end) || startSafe;
+      const startMin = timeToMinutes(startSafe);
+      let endMin = timeToMinutes(rawEndSafe);
+      if(endMin <= startMin) endMin = startMin + 60;
+      return {
+        startMin,
+        endMin,
+        displayStart: startSafe,
+        displayEnd: minutesToTime(endMin)
+      };
+    }
     function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
     function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
 
@@ -476,11 +502,10 @@
 
         const todays = filtered.filter(ev => ev.date === dateStr);
         todays.forEach(ev => {
-          const startMin = timeToMinutes(ev.start);
-          const endMin = timeToMinutes(ev.end);
+          const { startMin, endMin, displayStart, displayEnd } = normalizeEventTimes(ev);
           const dur = Math.max(10, endMin - startMin);
-          const top = (startMin / 60) * ROW_HEIGHT + 6;
-          const proportional = (dur / 60) * ROW_HEIGHT - 10;
+          const top = (startMin / 60) * ROW_HEIGHT;
+          const proportional = (dur / 60) * ROW_HEIGHT;
           const height = Math.max(minHeightByDuration(dur), proportional);
 
           const el = document.createElement('div');
@@ -491,7 +516,7 @@
           el.innerHTML = `
             <div class="event__title">${escapeHtml(ev.title)}</div>
             <div class="event__meta">
-              <span class="pill">${ev.start} - ${ev.end}</span>
+              <span class="pill">${displayStart} - ${displayEnd}</span>
               <span class="pill">${escapeHtml(ev.location || '未填写地点')}</span>
               ${(ev.tags||[]).slice(0,3).map(t=>`<span class="pill">${escapeHtml(t)}</span>`).join('')}
             </div>
@@ -508,17 +533,20 @@
     function renderAgendaList(filtered){
       agendaList.innerHTML = "";
       const sorted = [...filtered].sort((a,b)=>{
-        if(a.date === b.date) return timeToMinutes(a.start) - timeToMinutes(b.start);
+        const aTime = normalizeEventTimes(a).startMin;
+        const bTime = normalizeEventTimes(b).startMin;
+        if(a.date === b.date) return aTime - bTime;
         return a.date.localeCompare(b.date);
       });
 
       sorted.forEach(ev => {
         const dateLabel = ev.date.replace(/-/g,"/");
+        const { displayStart, displayEnd } = normalizeEventTimes(ev);
         const item = document.createElement('div');
         item.className = 'list-item';
         item.dataset.id = ev.id;
         item.innerHTML = `
-          <div class="time-tag">${ev.start}<small>${ev.end}</small></div>
+          <div class="time-tag">${displayStart}<small>${displayEnd}</small></div>
           <div class="list-item__main">
             <div class="list-item__title">${escapeHtml(ev.title)}</div>
             <div class="list-item__meta">${dateLabel} · ${escapeHtml(ev.location || '未填写地点')}</div>
@@ -737,6 +765,11 @@
     });
     modalCancel.addEventListener('click', closeModal);
     modalOk.addEventListener('click', ()=>{
+      // 表单模式下直接提交，避免回调丢失导致点击无响应
+      if(modalForm.style.display !== 'none'){
+        handleSubmitForm();
+        return;
+      }
       if(typeof modalOkHandler === 'function') modalOkHandler();
       else closeModal();
     });
