@@ -2494,11 +2494,16 @@
         document.getElementById('mobileModal').classList.add('active');
     }
 
-    // 确认退出登录
+// 确认退出登录
     function confirmLogout() {
         closeMobileModal();
         showNotification('退出成功', '您已成功退出登录，正在返回登录页面...', 'success');
-        // 这里可以添加实际的退出登录逻辑，比如跳转到登录页面
+
+        // 延迟1.5秒后跳转到登录页面
+        setTimeout(() => {
+            // 跳转到登录页面
+            window.location.href = '移动用户端-登录.html';
+        }, 1500);
     }
 
     // -------------------------- 设置模块逻辑 --------------------------
