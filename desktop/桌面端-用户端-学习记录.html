@@ -146,10 +146,11 @@
       color: var(--text-tertiary);
     }
 
-    .page-content {
-      margin-left: calc(var(--sidebar-width) - 220px);
+    .page-content{
+      margin-left:0;
       padding: var(--spacing-xl) var(--spacing-lg);
     }
+
 
     .content-inner {
       width: min(1700px, calc(100% - var(--sidebar-width) + 140px));
@@ -482,11 +483,12 @@
 </head>
 <body>
   <div class="admin-layout">
-    <aside class="sidebar" aria-label="侧边导航">
+    <aside class="sidebar">
       <div class="sidebar__header">
         <div class="sidebar__logo">S</div>
         <div class="sidebar__title">StudySpace</div>
       </div>
+
       <nav class="sidebar__nav">
         <a href="桌面端-用户端-任务.html" class="sidebar__nav-item">任务</a>
         <a href="calendar_day.html" class="sidebar__nav-item">日历</a>
@@ -494,6 +496,7 @@
         <a href="桌面-用户端-座位预约.html" class="sidebar__nav-item">座位预约</a>
         <a href="桌面端-用户端-设置.html" class="sidebar__nav-item">个人设置</a>
       </nav>
+
       <div class="sidebar__footer">
         <div class="sidebar__avatar">用</div>
         <div>
@@ -502,6 +505,7 @@
         </div>
       </div>
     </aside>
+
 
     <div class="admin-layout__main">
       <div class="page-content">
