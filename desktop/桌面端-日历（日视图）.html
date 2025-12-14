@@ -1015,11 +1015,15 @@
 
     document.querySelectorAll(".view-tab").forEach(btn=>{
       btn.addEventListener("click", ()=>{
-        document.querySelectorAll(".view-tab").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        const v = btn.dataset.view;
-        if(v !== "day"){
-          showModal("提示", "当前页面实现的是「日视图」。\n如需周视图/月视图，我可以按同风格补齐。", closeModal);
+        const target = btn.dataset.view;
+        if(target === "day") return;
+
+        const viewMap = {
+          week: "桌面端-日历（周视图）.html",
+          month: "桌面端-日历（月视图）.html"
+        };
+        if(viewMap[target]){
+          window.location.href = `./${viewMap[target]}`;
         }
       });
     });
