@@ -287,12 +287,13 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -46%);
-            width: min(420px, calc(100% - 32px));
+            width: min(360px, calc(100% - 24px));
+            max-height: 78vh;
             background: #fff;
-            border-radius: 22px;
+            border-radius: 18px;
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--glass-border);
-            padding: 20px 20px 16px;
+            padding: 14px 16px 12px;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.2s ease, transform 0.2s ease;
@@ -301,9 +302,15 @@
 
         .modal.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
 
-        .modal__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .modal__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .modal__title { font-size: 18px; font-weight: 900; }
         .modal__close { border: none; background: transparent; font-size: 22px; cursor: pointer; color: var(--text-secondary); }
+
+        .modal__body {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
 
         .form { display: grid; gap: 12px; }
         .field { display: flex; flex-direction: column; gap: 6px; }
@@ -319,9 +326,24 @@
             outline: none;
         }
         .textarea { min-height: 80px; resize: vertical; }
-        .modal__actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px; }
+        .modal__actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
         .btn { height: 42px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--border); background: #fff; font-weight: 800; cursor: pointer; }
         .btn-primary { background: linear-gradient(135deg, var(--primary), #64b5ff); color: #fff; border: none; box-shadow: var(--shadow-sm); }
+
+        .task-actions { display: flex; align-items: center; gap: 8px; }
+        .task-complete {
+            border: none;
+            background: #eef8f0;
+            color: #1f9d4a;
+            padding: 8px 10px;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .task-complete i { font-size: 14px; }
     </style>
 </head>
 <body>
@@ -396,46 +418,24 @@
         <div class="modal__title" id="modalTitle">新建任务</div>
         <button class="modal__close" id="closeModalBtn" aria-label="关闭">&times;</button>
     </div>
-    <div class="form">
-        <div class="field full">
-            <div class="label">标题</div>
-            <input class="input" id="fTitle" placeholder="输入任务标题" />
-        </div>
-        <div class="field">
-            <div class="label">开始时间</div>
-            <input class="input" type="datetime-local" id="fStart" />
-        </div>
-        <div class="field">
-            <div class="label">截止时间</div>
-            <input class="input" type="datetime-local" id="fEnd" />
-        </div>
-        <div class="field">
-            <div class="label">状态</div>
-            <select class="select2" id="fStatus">
-                <option value="todo">待办</option>
-                <option value="doing">进行中</option>
-                <option value="done">已完成</option>
-            </select>
-        </div>
-        <div class="field">
-            <div class="label">优先级</div>
-            <select class="select2" id="fPrio">
-                <option value="mid">中优先级</option>
-                <option value="high">高优先级</option>
-                <option value="low">低优先级</option>
-            </select>
-        </div>
-        <div class="field full">
-            <div class="label">标签（用逗号分隔）</div>
-            <input class="input" id="fTags" placeholder="学习计划, 同步, 提醒" />
-        </div>
-        <div class="field full">
-            <div class="label">进度（0-100）</div>
-            <input class="input" type="number" min="0" max="100" id="fProgress" placeholder="60" />
-        </div>
-        <div class="field full">
-            <div class="label">备注</div>
-            <textarea class="textarea" id="fNote" placeholder="补充说明"></textarea>
+    <div class="modal__body">
+        <div class="form">
+            <div class="field full">
+                <div class="label">标题</div>
+                <input class="input" id="fTitle" placeholder="输入任务标题" />
+            </div>
+            <div class="field full">
+                <div class="label">截止时间</div>
+                <input class="input" type="datetime-local" id="fEnd" />
+            </div>
+            <div class="field full">
+                <div class="label">标签（用逗号分隔）</div>
+                <input class="input" id="fTags" placeholder="学习计划, 提醒" />
+            </div>
+            <div class="field full">
+                <div class="label">备注</div>
+                <textarea class="textarea" id="fNote" placeholder="补充说明"></textarea>
+            </div>
         </div>
     </div>
     <div class="modal__actions">
@@ -459,12 +459,8 @@
     const saveBtn = document.getElementById("saveBtn");
 
     const fTitle = document.getElementById("fTitle");
-    const fStart = document.getElementById("fStart");
     const fEnd = document.getElementById("fEnd");
-    const fStatus = document.getElementById("fStatus");
-    const fPrio = document.getElementById("fPrio");
     const fTags = document.getElementById("fTags");
-    const fProgress = document.getElementById("fProgress");
     const fNote = document.getElementById("fNote");
 
     let modalMode = "create";
@@ -573,11 +569,14 @@
         }
         item.dataset.id = task.id;
 
-        const badgeText = task.end ? `到期 ${formatTime(task.end)}` : (task.tags[0] || "");
+        const badgeText = task.end ? `到期 ${formatTime(task.end)}` : ((task.tags && task.tags[0]) || "");
         item.innerHTML = `
             <div class="task-item__top">
                 <h4 class="task-title">${task.title}</h4>
-                <span class="badge" style="${badgeStyle(task)}">${badgeText}</span>
+                <div class="task-actions">
+                    <button class="task-complete" type="button" aria-label="完成任务"><i class="fa-solid fa-check"></i><span>完成</span></button>
+                    <span class="badge" style="${badgeStyle(task)}">${badgeText}</span>
+                </div>
             </div>
             <div class="task-meta">
                 ${task.meta.map((m, i) => {
@@ -588,7 +587,20 @@
         `;
 
         item.addEventListener("click", () => openModal("edit", task.id));
+        const completeBtn = item.querySelector(".task-complete");
+        completeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            completeTask(task.id);
+        });
         return item;
+    }
+
+    function completeTask(taskId) {
+        const idx = tasks.findIndex(t => t.id === taskId);
+        if (idx > -1) {
+            tasks.splice(idx, 1);
+            renderTasks();
+        }
     }
 
     function renderTasks() {
@@ -613,22 +625,14 @@
             if (!task) return;
             editingId = task.id;
             fTitle.value = task.title;
-            fStart.value = task.start;
             fEnd.value = task.end;
-            fStatus.value = task.status;
-            fPrio.value = task.priority;
-            fTags.value = task.tags.join(",");
-            fProgress.value = task.progress;
+            fTags.value = (task.tags || []).join(",");
             fNote.value = task.note || "";
         } else {
             editingId = null;
             fTitle.value = "";
-            fStart.value = "";
             fEnd.value = "";
-            fStatus.value = "todo";
-            fPrio.value = "mid";
             fTags.value = "";
-            fProgress.value = "";
             fNote.value = "";
         }
 
@@ -643,24 +647,29 @@
     }
 
     function saveTask() {
+        const existing = modalMode === "edit" ? tasks.find(t => t.id === editingId) : null;
+        const baseProgress = existing ? existing.progress : 0;
         const payload = {
             title: fTitle.value.trim() || "未命名任务",
-            start: fStart.value,
             end: fEnd.value,
-            status: fStatus.value,
-            priority: fPrio.value,
             tags: fTags.value.split(",").map(t => t.trim()).filter(Boolean),
-            progress: Math.min(100, Math.max(0, Number(fProgress.value || 0))),
-            note: fNote.value,
-            scheduled: true,
+            note: fNote.value.trim(),
             meta: []
         };
 
+        if (baseProgress) payload.meta.push({ icon: "fa-regular fa-square-check", text: `进度 ${baseProgress}%` });
         if (payload.note) payload.meta.push({ icon: "fa-regular fa-note-sticky", text: payload.note });
-        if (payload.progress) payload.meta.unshift({ icon: "fa-regular fa-square-check", text: `进度 ${payload.progress}%` });
 
         if (modalMode === "create") {
-            const newTask = { id: `t${Date.now()}`, ...payload };
+            const newTask = {
+                id: `t${Date.now()}`,
+                status: "todo",
+                priority: "mid",
+                progress: baseProgress,
+                start: "",
+                scheduled: true,
+                ...payload
+            };
             tasks.unshift(newTask);
         } else if (editingId) {
             const idx = tasks.findIndex(t => t.id === editingId);
