@@ -10,6 +10,8 @@
             --primary: #2d81ff;
             --primary-light: #f0f7ff;
             --success: #4cd964;
+            --danger: #ff3b30;
+            --danger-light: #fff0f0;
             --text-main: #1d1d1f;
             --text-secondary: #6e6e73;
             --border: #e5e5e7;
@@ -117,19 +119,6 @@
 
         .top-bar__title { flex: 1; font-size: 18px; font-weight: 800; text-align: center; }
 
-        .top-bar__action {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 14px;
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            background: var(--primary-light);
-            color: var(--primary);
-            font-weight: 700;
-            text-decoration: none;
-        }
-
         .main-content {
             flex: 1;
             overflow-y: auto;
@@ -152,20 +141,23 @@
 
         .section-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
         .section-title { font-size: 17px; font-weight: 800; }
-        
+
         .task-list { display: flex; flex-direction: column; gap: 12px; }
         .task-item { padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--border); background: #fff; box-shadow: inset 0 0 0 0 rgba(0,0,0,0); transition: transform 0.2s, box-shadow 0.2s; }
         .task-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-        .task-item__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .badge { padding: 6px 10px; border-radius: 12px; background: var(--primary-light); color: var(--primary); font-weight: 700; font-size: 12px; }
-        .task-title { font-size: 16px; font-weight: 700; margin: 0; }
+        .task-item__top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .badge { padding: 6px 10px; border-radius: 12px; background: var(--primary-light); color: var(--primary); font-weight: 700; font-size: 12px; white-space: nowrap; }
+        .task-title { font-size: 16px; font-weight: 700; margin: 0; flex: 1; min-width: 0; }
         .task-meta { display: flex; gap: 10px; color: var(--text-secondary); font-size: 13px; align-items: center; flex-wrap: wrap; }
         .progress { height: 6px; background: var(--bg-light); border-radius: 8px; overflow: hidden; margin-top: 10px; }
         .progress-bar { height: 100%; background: linear-gradient(135deg, var(--primary), #64b5ff); width: 50%; }
-
-        .quick-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-        .ghost-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border); text-decoration: none; color: var(--text-main); background: #fff; font-weight: 700; }
-        .ghost-btn.primary { background: linear-gradient(135deg, var(--primary), #64b5ff); color: #fff; border: none; box-shadow: var(--shadow-sm); }
 
         .bottom-nav {
             height: 76px;
@@ -207,13 +199,8 @@
             text-decoration: none;
         }
 
-        .nav-item:hover {
-            background: var(--bg-light);
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-        }
+        .nav-item:hover { background: var(--bg-light); }
+        .nav-item.active { color: var(--primary); }
 
         .nav-item__icon {
             width: 48px;
@@ -265,7 +252,6 @@
             cursor: pointer;
             z-index: 20;
         }
-
         .fab:active { transform: translateY(1px); }
 
         .modal-backdrop {
@@ -316,7 +302,7 @@
         .field { display: flex; flex-direction: column; gap: 6px; }
         .field.full { grid-column: 1/-1; }
         .label { font-weight: 800; color: var(--text-main); font-size: 14px; }
-        .input, .select2, .textarea {
+        .input, .textarea {
             width: 100%;
             padding: 12px 14px;
             border-radius: 12px;
@@ -326,24 +312,39 @@
             outline: none;
         }
         .textarea { min-height: 80px; resize: vertical; }
-        .modal__actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+
+        .modal__actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; flex-wrap: wrap; }
         .btn { height: 42px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--border); background: #fff; font-weight: 800; cursor: pointer; }
         .btn-primary { background: linear-gradient(135deg, var(--primary), #64b5ff); color: #fff; border: none; box-shadow: var(--shadow-sm); }
+        .btn-danger { background: var(--danger-light); color: var(--danger); border: 1px solid rgba(255,59,48,0.25); }
 
-        .task-actions { display: flex; align-items: center; gap: 8px; }
-        .task-complete {
-            border: none;
-            background: #eef8f0;
-            color: #1f9d4a;
-            padding: 8px 10px;
-            border-radius: 12px;
+        /* 任务按钮：确保“删除”可见 */
+        .task-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+        .task-btn{
+            border:none;
+            padding: 6px 8px;      /* 更小 */
+            border-radius: 10px;   /* 更紧凑 */
             font-weight: 800;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;              /* 图标与文字距离更小 */
+            line-height: 1;
+            white-space: nowrap;
+            font-size: 12px;       /* 文字更小 */
         }
-        .task-complete i { font-size: 14px; }
+        .task-btn i{ font-size: 12px; }  /* 图标更小 */
+
+
+        .task-complete { background: #eef8f0; color: #1f9d4a; }
+        .task-delete { background: var(--danger-light); color: var(--danger); }
     </style>
 </head>
 <body>
@@ -383,7 +384,6 @@
                 </div>
                 <div class="task-list" id="pendingList"></div>
             </div>
-
         </div>
 
         <div class="bottom-nav" id="bottomNav">
@@ -412,6 +412,7 @@
         <button class="fab" id="fabAdd" aria-label="新建任务"><i class="fa-solid fa-plus"></i></button>
     </div>
 </div>
+
 <div class="modal-backdrop" id="modalBackdrop"></div>
 <div class="modal" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal__header">
@@ -439,6 +440,7 @@
         </div>
     </div>
     <div class="modal__actions">
+        <button class="btn btn-danger" id="deleteBtn" style="display:none;">删除</button>
         <button class="btn" id="cancelBtn">取消</button>
         <button class="btn btn-primary" id="saveBtn">保存</button>
     </div>
@@ -457,6 +459,7 @@
     const closeModalBtn = document.getElementById("closeModalBtn");
     const cancelBtn = document.getElementById("cancelBtn");
     const saveBtn = document.getElementById("saveBtn");
+    const deleteBtn = document.getElementById("deleteBtn");
 
     const fTitle = document.getElementById("fTitle");
     const fEnd = document.getElementById("fEnd");
@@ -560,6 +563,19 @@
         return "";
     }
 
+    function deleteTask(taskId) {
+        const idx = tasks.findIndex(t => t.id === taskId);
+        if (idx === -1) return;
+        tasks.splice(idx, 1);
+        if (taskModal.classList.contains("active") && editingId === taskId) closeModal();
+        renderTasks();
+    }
+
+    function completeTask(taskId) {
+        // 这里沿用你原来的逻辑：完成=移除
+        deleteTask(taskId);
+    }
+
     function createTaskItem(task) {
         const item = document.createElement("div");
         item.className = "task-item";
@@ -574,36 +590,32 @@
             <div class="task-item__top">
                 <h4 class="task-title">${task.title}</h4>
                 <div class="task-actions">
-                    <button class="task-complete" type="button" aria-label="完成任务"><i class="fa-solid fa-check"></i><span>完成</span></button>
+                    <button class="task-btn task-complete" type="button" aria-label="完成任务">
+                        <i class="fa-solid fa-check"></i><span>完成</span>
+                    </button>
                     <span class="badge" style="${badgeStyle(task)}">${badgeText}</span>
                 </div>
             </div>
             <div class="task-meta">
-                ${task.meta.map((m, i) => {
-                    return `${i>0 ? '<i class=\"fa-solid fa-circle\" style=\"font-size:6px; color:#d8dbe5;\"></i>' : ''}<i class="${m.icon}"></i><span>${m.text}</span>`;
+                ${(task.meta || []).map((m, i) => {
+                    return `${i>0 ? '<i class="fa-solid fa-circle" style="font-size:6px; color:#d8dbe5;"></i>' : ''}<i class="${m.icon}"></i><span>${m.text}</span>`;
                 }).join("")}
             </div>
             <div class="progress"><div class="progress-bar" style="width:${task.progress || 0}%"></div></div>
         `;
 
+        // 点卡片=编辑
         item.addEventListener("click", () => openModal("edit", task.id));
+
+        // 完成按钮：阻止冒泡，避免触发编辑
         const completeBtn = item.querySelector(".task-complete");
         completeBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             completeTask(task.id);
         });
+
+
         return item;
-    }
-
-    function completeTask(taskId) {
-        const idx = tasks.findIndex(t => t.id === taskId);
-        if (idx === -1) return;
-
-        tasks.splice(idx, 1);
-        if (taskModal.classList.contains("active") && editingId === taskId) {
-            closeModal();
-        }
-        renderTasks();
     }
 
     function renderTasks() {
@@ -628,15 +640,17 @@
             if (!task) return;
             editingId = task.id;
             fTitle.value = task.title;
-            fEnd.value = task.end;
+            fEnd.value = task.end || "";
             fTags.value = (task.tags || []).join(",");
             fNote.value = task.note || "";
+            deleteBtn.style.display = "inline-flex";
         } else {
             editingId = null;
             fTitle.value = "";
             fEnd.value = "";
             fTags.value = "";
             fNote.value = "";
+            deleteBtn.style.display = "none";
         }
 
         modalBackdrop.classList.add("active");
@@ -651,7 +665,8 @@
 
     function saveTask() {
         const existing = modalMode === "edit" ? tasks.find(t => t.id === editingId) : null;
-        const baseProgress = existing ? existing.progress : 0;
+        const baseProgress = existing ? (existing.progress || 0) : 0;
+
         const payload = {
             title: fTitle.value.trim() || "未命名任务",
             end: fEnd.value,
@@ -676,9 +691,7 @@
             tasks.unshift(newTask);
         } else if (editingId) {
             const idx = tasks.findIndex(t => t.id === editingId);
-            if (idx > -1) {
-                tasks[idx] = { ...tasks[idx], ...payload };
-            }
+            if (idx > -1) tasks[idx] = { ...tasks[idx], ...payload };
         }
 
         renderTasks();
@@ -690,6 +703,7 @@
     cancelBtn.addEventListener("click", closeModal);
     modalBackdrop.addEventListener("click", closeModal);
     saveBtn.addEventListener("click", saveTask);
+
 
     renderTasks();
 </script>
