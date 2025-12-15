@@ -400,4 +400,4 @@ git commit -m "docs: 更新API文档和使用说明"
 
 ---
 
-Copyright © 2024 StudySpace Team. All rights reserved.
+Copyright © 2025 StudySpace Team. All rights reserved.
