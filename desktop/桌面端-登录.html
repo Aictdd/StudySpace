@@ -584,7 +584,7 @@
         if (password.length >= 6) {
           formMessage.style.display = 'flex';
           showMessage('登录成功，即将跳转...', 'success');
-          const targetPage = account.toLowerCase().includes('admin') ? routes.admin : routes.main;
+          const targetPage = routes.main;
           setTimeout(() => jumpTo(targetPage), 500);
         } else {
           formMessage.style.display = 'flex';

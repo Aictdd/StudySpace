@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../../../core/components/filter-dropdown/style.css">
   <link rel="stylesheet" href="../../../core/components/form-controls/style.css">
   <link rel="stylesheet" href="../../../core/components/button/style.css">
+  <link rel="stylesheet" href="../../../core/components/toast/style.css">
   <link rel="stylesheet" href="../styles/seat-list.css">
 </head>
 <body>
@@ -23,24 +24,42 @@
       </div>
       <nav class="sidebar__nav">
         <a href="../../dashboard/pages/overview.html" class="sidebar__nav-item" data-page="dashboard">
-          <span class="sidebar__nav-text">预约管理</span>
+          <span class="sidebar__nav-text">📊 预约管理</span>
         </a>
         <a href="seat-list.html" class="sidebar__nav-item sidebar__nav-item--active" data-page="seat-management">
-          <span class="sidebar__nav-text">座位管理</span>
+          <span class="sidebar__nav-text">💺 座位管理</span>
         </a>
         <a href="../../study-record/pages/index.html" class="sidebar__nav-item" data-page="study-record">
-          <span class="sidebar__nav-text">学习记录</span>
+          <span class="sidebar__nav-text">📚 学习记录</span>
         </a>
         <a href="../../user-management/pages/index.html" class="sidebar__nav-item" data-page="user-management">
-          <span class="sidebar__nav-text">用户管理</span>
+          <span class="sidebar__nav-text">👥 用户管理</span>
         </a>
         <a href="../../announcement/pages/index.html" class="sidebar__nav-item" data-page="announcement">
-          <span class="sidebar__nav-text">公告通知</span>
+          <span class="sidebar__nav-text">📢 公告通知</span>
         </a>
         <a href="../../settings/pages/index.html" class="sidebar__nav-item" data-page="settings">
-          <span class="sidebar__nav-text">管理员设置</span>
+          <span class="sidebar__nav-text">⚙️ 管理员设置</span>
         </a>
       </nav>
+      
+      <!-- 侧边栏底部用户区域 -->
+      <div class="sidebar__footer">
+        <div class="sidebar__user" id="userBtn">
+          <div class="sidebar__user-avatar">管</div>
+          <div class="sidebar__user-info">
+            <span class="sidebar__user-name">管理员</span>
+            <span class="sidebar__user-role">超级管理员</span>
+          </div>
+          <span class="sidebar__user-menu">▼</span>
+        </div>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown__item">👤 个人信息</div>
+          <div class="user-dropdown__item">🔐 修改密码</div>
+          <div class="user-dropdown__divider"></div>
+          <div class="user-dropdown__item user-dropdown__item--danger" id="logoutBtn">🚪 退出登录</div>
+        </div>
+      </div>
     </aside>
 
     <!-- 主内容区 -->
@@ -49,8 +68,11 @@
       <header class="navbar navbar--fixed">
         <div class="search-bar">
           <input type="text" class="search-bar__input" placeholder="搜索座位...">
+          <button class="search-bar__btn" title="搜索">搜索</button>
         </div>
-        <div class="navbar__actions">
+        <div class="navbar__right">
+          <span class="navbar__time" id="currentTime"></span>
+          <button class="navbar__notification">🔔<span class="navbar__notification-badge"></span></button>
           <button class="navbar__filter-btn">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
               <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
@@ -422,6 +444,141 @@
         s.classList.remove('seat--selected');
       });
       document.getElementById('seatDetailPanel').classList.remove('seat-detail-panel--visible');
+    });
+
+    // 用户下拉菜单
+    const userBtn = document.getElementById('userBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    userBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      userDropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.sidebar__footer')) {
+        userDropdown?.classList.remove('show');
+      }
+    });
+
+    logoutBtn?.addEventListener('click', () => {
+      if (confirm('确定要退出登录吗？')) {
+        window.location.href = '../../../pages/login.html';
+      }
+    });
+
+    // 显示当前时间
+    function updateTime() {
+      const now = new Date();
+      const options = { month: 'short', day: 'numeric', weekday: 'short', hour: '2-digit', minute: '2-digit' };
+      const timeEl = document.getElementById('currentTime');
+      if (timeEl) timeEl.textContent = now.toLocaleString('zh-CN', options);
+    }
+    updateTime();
+    setInterval(updateTime, 60000);
+
+    // ========== Toast 提示 ==========
+    function showToast(message, type = 'info') {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      
+      const toast = document.createElement('div');
+      toast.className = `toast toast--${type}`;
+      toast.innerHTML = `<span>${message}</span>`;
+      toast.style.cssText = `
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 12px 24px;
+        background: ${type === 'success' ? '#34C759' : type === 'error' ? '#FF3B30' : '#007AFF'};
+        color: white;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        z-index: 9999;
+        animation: toastIn 0.3s ease;
+      `;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'toastOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    // Toast 动画
+    const toastStyle = document.createElement('style');
+    toastStyle.textContent = `
+      @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(-20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+      @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
+    `;
+    document.head.appendChild(toastStyle);
+
+    // ========== 搜索框交互 ==========
+    document.querySelector('.search-bar__input')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && e.target.value.trim()) {
+        showToast(`正在搜索座位: "${e.target.value.trim()}"`, 'info');
+      }
+    });
+
+    // ========== 通知按钮 ==========
+    document.querySelector('.navbar__notification')?.addEventListener('click', () => {
+      showToast('您有 2 条座位维护提醒', 'info');
+    });
+
+    // ========== 筛选按钮 ==========
+    document.querySelector('.navbar__filter-btn')?.addEventListener('click', () => {
+      showToast('高级筛选面板已打开', 'info');
+    });
+
+    // ========== 日期选择器 ==========
+    document.querySelector('.date-picker')?.addEventListener('click', function() {
+      const input = this.querySelector('.date-picker__input');
+      const dates = ['2025/11/29', '2025/11/30', '2025/12/01'];
+      const currentIndex = dates.indexOf(input.value);
+      input.value = dates[(currentIndex + 1) % dates.length];
+      showToast(`已切换到 ${input.value}`, 'success');
+    });
+
+    // ========== 座位图例点击 ==========
+    document.querySelectorAll('.seat-legend__item').forEach(item => {
+      item.style.cursor = 'pointer';
+      item.addEventListener('click', function() {
+        const text = this.querySelector('.seat-legend__text')?.textContent;
+        showToast(`筛选显示: ${text}座位`, 'info');
+      });
+    });
+
+    // ========== 设施复选框变化 ==========
+    document.querySelectorAll('.form-checkbox__input').forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const label = this.closest('.form-checkbox').querySelector('.form-checkbox__label')?.textContent;
+        showToast(`${this.checked ? '已启用' : '已禁用'}: ${label}`, 'success');
+      });
+    });
+
+    // ========== 状态选择变化 ==========
+    document.getElementById('reservationStatus')?.addEventListener('change', function() {
+      const statusText = this.options[this.selectedIndex].text;
+      showToast(`状态已更改为: ${statusText}`, 'info');
+    });
+
+    // ========== 座位管理选择变化 ==========
+    document.getElementById('seatManagement')?.addEventListener('change', function() {
+      const text = this.options[this.selectedIndex].text;
+      showToast(`管理状态: ${text}`, 'info');
+    });
+
+    // ========== 用户菜单项交互 ==========
+    document.querySelectorAll('.user-dropdown__item:not(.user-dropdown__item--danger)').forEach(item => {
+      item.addEventListener('click', function() {
+        const text = this.textContent.trim();
+        showToast(`正在打开${text.replace(/[^\u4e00-\u9fa5]/g, '')}...`, 'info');
+        userDropdown.classList.remove('show');
+      });
     });
   </script>
 </body>
