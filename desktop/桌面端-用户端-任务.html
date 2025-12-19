@@ -239,9 +239,9 @@
 
     .kanban{
       display:grid;
-      grid-template-columns:repeat(3, minmax(240px, 1fr));
+      grid-template-columns:repeat(3, minmax(260px, 1fr));
       gap:14px;
-      min-width:780px;
+      min-width:810px;
     }
     .col{
       background:var(--bg-light);
@@ -286,7 +286,7 @@
       transition:all .2s;
       position:relative;
       overflow:hidden;
-      display:flex;flex-direction:column;gap:8px;
+      display:flex;flex-direction:column;gap:10px;
     }
     .task:hover{
       transform:translateY(-1px);
@@ -297,10 +297,13 @@
       border-color:rgba(45,129,255,0.55);
       box-shadow:0 0 0 3px rgba(45,129,255,0.12);
     }
+    .task__header{display:flex;align-items:flex-start;gap:10px;}
     .task__title{
       font-size:15px;font-weight:950;line-height:1.25;
       display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
       overflow:hidden;
+      flex:1;
+      min-width:0;
     }
     .task__meta{
       display:flex;flex-wrap:wrap;gap:8px;
@@ -332,6 +335,8 @@
     }
     .mini-btn:hover{border-color:rgba(45,129,255,0.28); box-shadow:var(--shadow-sm);}
     .mini-btn.primary{background:var(--primary-light); color:var(--primary); border-color:rgba(45,129,255,0.25);}
+    .mini-btn.danger{background:var(--danger-light); color:var(--danger); border-color:rgba(255,59,48,0.30);}
+    .task__complete-btn{white-space:nowrap;flex-shrink:0;}
 
     /* ===== 右侧详情 ===== */
     .side-panel{
@@ -932,7 +937,10 @@
       const startEnd = fmtTimeRange(t.start, t.end);
 
       div.innerHTML = `
-        <div class="task__title">${escapeHtml(t.title)}</div>
+        <div class="task__header">
+          <div class="task__title">${escapeHtml(t.title)}</div>
+          <button class="mini-btn danger task__complete-btn" data-complete="true">完成</button>
+        </div>
         <div class="task__meta">
           <span class="pill ${prioClass(t.priority)}">${prioText(t.priority)}</span>
           <span class="pill">${statusText(t.status)}</span>
@@ -950,6 +958,13 @@
       `;
 
       div.addEventListener("click", (e)=>{
+        const completeBtn = e.target.closest(".task__complete-btn");
+        if(completeBtn){
+          e.stopPropagation();
+          deleteTask(t.id);
+          return;
+        }
+
         // 点击小按钮不触发重复 select（但也可以选中）
         const btn = e.target.closest(".mini-btn");
         if(btn){
@@ -1022,6 +1037,18 @@
       render();
       // 详情也更新
       if(selectedId===id) selectTask(id);
+    }
+
+    function deleteTask(id){
+      if(!id) return;
+      if(!tasks.some(x=>x.id===id)) return;
+      tasks = tasks.filter(x=>x.id!==id);
+      saveTasks();
+      if(selectedId===id){
+        clearDetail();
+      }else{
+        render();
+      }
     }
 
     /* ====== Modal: 新建/编辑 ====== */
@@ -1120,9 +1147,7 @@
       const t = tasks.find(x=>x.id===selectedId);
       if(!t) return;
       if(confirm(`确认删除该任务？\n\n${t.title}`)){
-        tasks = tasks.filter(x=>x.id!==selectedId);
-        saveTasks();
-        clearDetail();
+        deleteTask(selectedId);
       }
     });
 
